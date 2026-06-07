@@ -43,6 +43,12 @@ const T={
     selectPrompt:'Selecione modalidades, duração, blocos e séries',
     blocksLabel:'Blocos',
     setsLabel:'Séries',
+    modeTime:'⏱ Tempo',
+    modeManual:'⚙️ Manual',
+    estimatedTime:'Tempo estimado',
+    autoCalc:'Calculado automaticamente',
+    selectPromptTempo:'Selecione modalidades e duração',
+    selectPromptManual:'Selecione modalidades, blocos e séries',
     calHeader:'CALENDÁRIO',
     workoutsLabel:'treinos',
     kcalLabel:'kcal no mês',
@@ -143,6 +149,12 @@ const T={
     selectPrompt:'Select modalities, duration, blocks and sets',
     blocksLabel:'Blocks',
     setsLabel:'Sets',
+    modeTime:'⏱ Time',
+    modeManual:'⚙️ Manual',
+    estimatedTime:'Estimated time',
+    autoCalc:'Auto-calculated',
+    selectPromptTempo:'Select modalities and duration',
+    selectPromptManual:'Select modalities, blocks and sets',
     calHeader:'CALENDAR',
     workoutsLabel:'workouts',
     kcalLabel:'kcal this month',
@@ -615,7 +627,7 @@ const LOGO_SVG='<svg width="72" height="36" viewBox="0 0 80 40" fill="none" xmln
 
 const home='home',lib='lib',setup='setup',cal='cal',legit='legit';
 const musculacao='musculacao',core='core',cardio='cardio',metabolico='metabolico',funcional='funcional',crossfit='crossfit';
-const S={screen:'home',libFilter:[],setupSel:[],setupMuscGrp:[],setupDur:null,workout:null,wMods:[],wTitle:'',wSub:'',wNum:4,isPre:false,done:{},weights:{},calYear:new Date().getFullYear(),calMonth:new Date().getMonth(),calModal:null,expanded:{},legitFilter:'all',legitOpen:null,legitCands:{},legitQuery:{},profilePhotoPreview:null,profileEditing:false,checkInModal:null,setupBlocks:null,setupSets:null};
+const S={screen:'home',libFilter:[],setupSel:[],setupMuscGrp:[],setupDur:null,workout:null,wMods:[],wTitle:'',wSub:'',wNum:4,isPre:false,done:{},weights:{},calYear:new Date().getFullYear(),calMonth:new Date().getMonth(),calModal:null,expanded:{},legitFilter:'all',legitOpen:null,legitCands:{},legitQuery:{},profilePhotoPreview:null,profileEditing:false,checkInModal:null,setupMode:'tempo',setupBlocks:null,setupSets:null};
 
 /* ============== EXERCISE DEMONSTRATION MEDIA ==============
    GIFs demonstrativos vindos da API workoutxapp via proxy /api/exercise-media.
@@ -823,7 +835,9 @@ function legitScreen(){
 function toggleLibFilter(mod){const i=S.libFilter.indexOf(mod);if(i>-1)S.libFilter.splice(i,1);else S.libFilter.push(mod);render();}
 function toggleSetupMod(mod){const i=S.setupSel.indexOf(mod);if(i>-1){S.setupSel.splice(i,1);if(mod===musculacao)S.setupMuscGrp=[];}else{S.setupSel.push(mod);}render();}
 function toggleSetupMuscGrp(g){const i=S.setupMuscGrp.indexOf(g);if(i>-1)S.setupMuscGrp.splice(i,1);else S.setupMuscGrp.push(g);render();}
-function setDur(d){S.setupDur=d;render();}
+function estimateMin(blocks,sets){return Math.round(blocks*(sets*3+2));}
+function setSetupMode(m){S.setupMode=m;S.setupDur=null;S.setupBlocks=null;S.setupSets=null;render();}
+function setDur(d){S.setupDur=d;if(S.setupMode==='tempo'||!S.setupMode){if(d===30){S.setupBlocks=4;S.setupSets=2;}else{S.setupBlocks=5;S.setupSets=3;}}render();}
 function setBlocks(n){S.setupBlocks=n;render();}
 function setSets(n){S.setupSets=n;render();}
 function toggleSet(stId,s){const k=stId+'-'+s;S.done[k]=S.done[k]?false:true;render();}
@@ -834,7 +848,10 @@ function openPreMade(idx){
   S.wMods=w.mods;S.wTitle=t('wTitleReady');S.wSub=S.workout.length+' '+t('blocks');S.isPre=true;S.done={};S.weights={};S.screen='workout';render();
 }
 function doGenerate(){
-  if(S.setupSel.length===0||S.setupDur===null||S.setupBlocks===null||S.setupSets===null)return;
+  const isTempo=S.setupMode==='tempo'||!S.setupMode;
+  if(S.setupSel.length===0)return;
+  if(isTempo&&S.setupDur===null)return;
+  if(!isTempo&&(S.setupBlocks===null||S.setupSets===null))return;
   const n=S.setupBlocks;
   S.wNum=n;
   const origMusc=GEN.musculacao;
@@ -844,7 +861,8 @@ function doGenerate(){
   }
   S.workout=generateWorkout(S.setupSel,n,S.setupSets);
   GEN.musculacao=origMusc;
-  S.wMods=[...S.setupSel];S.wTitle=t('wTitleBuild');S.wSub=S.setupDur+'min / '+n+' '+t('blocks')+' / '+S.setupSets+' sets';S.isPre=false;S.done={};S.weights={};S.screen='workout';render();
+  const durStr=isTempo?S.setupDur+'min':'~'+estimateMin(n,S.setupSets)+'min';
+  S.wMods=[...S.setupSel];S.wTitle=t('wTitleBuild');S.wSub=durStr+' / '+n+' '+t('blocks')+' / '+S.setupSets+' sets';S.isPre=false;S.done={};S.weights={};S.screen='workout';render();
 }
 function doRegen(){if(S.isPre)return;S.workout=generateWorkout(S.wMods,S.wNum||4,S.setupSets||3);S.done={};S.weights={};render();}
 
@@ -1178,20 +1196,40 @@ function libScreen(){
 }
 
 function setupScreen(){
+  const isTempo=(S.setupMode||'tempo')==='tempo';
   const modGrid=ML.map(m=>{const s=S.setupSel.indexOf(m.id)>-1;return '<button onclick="toggleSetupMod('+m.id+')" style="padding:11px 6px;border-radius:11px;border:2px solid '+(s?m.c:'#302820')+';background:'+(s?m.b:'#1F1C18')+';color:#fff;text-align:center;transform:'+(s?'scale(0.95)':'scale(1)')+'"><div style="font-size:18px;margin-bottom:3px">'+m.e+'</div><div style="font-size:9px;font-weight:700;color:'+(s?m.c:'#444')+'">'+mLabel(m)+'</div></button>';}).join('');
-  const durBtns=[{v:30,l:'30 min',d:t('block4')},{v:45,l:'45 min',d:t('block5')}].map(o=>{const s=S.setupDur===o.v;return '<button onclick="setDur('+o.v+')" style="padding:16px;border-radius:12px;border:2px solid '+(s?'#fff':'#302820')+';background:'+(s?'#fff':'#1F1C18')+';color:'+(s?'#000':'#fff')+'"><div style="font-size:20px;font-weight:900">'+o.l+'</div><div style="font-size:9px;color:'+(s?'rgba(255,255,255,.7)':'#6E6050')+';margin-top:3px">'+o.d+'</div></button>';}).join('');
-  const selB=S.setupSel.map(badge).join(' ');
+  const hasMuscSel=S.setupSel.indexOf(musculacao)>-1;
+  const muscGrpHtml=hasMuscSel?'<div style="margin-bottom:24px"><p style="font-size:9px;font-weight:700;letter-spacing:3px;color:#FF6B35;margin-bottom:9px;text-transform:uppercase">'+t('muscGrpLabel')+'</p><div style="display:flex;flex-wrap:wrap;gap:6px">'+MUSC_GRPS.map(g=>{const s=S.setupMuscGrp.indexOf(g.id)>-1;const lbl=(T[LANG].muscGrps&&T[LANG].muscGrps[g.id])||g.id;return'<button onclick="toggleSetupMuscGrp(\''+g.id+'\')" style="font-size:10px;font-weight:700;padding:5px 11px;border-radius:99px;border:1.5px solid '+(s?'#FF6B35':'#3A3028')+';background:'+(s?'#200D00':'transparent')+';color:'+(s?'#FF6B35':'#555')+'">'+lbl+'</button>';}).join('')+'</div><div style="font-size:9px;color:#6E6050;margin-top:7px">'+t('muscGrpHint')+'</div></div>':'';
+  const modeToggle='<div style="display:flex;border:1.5px solid #302820;border-radius:11px;overflow:hidden;margin-bottom:26px">'
+    +['tempo','manual'].map(m=>{const s=(S.setupMode||'tempo')===m;return '<button onclick="setSetupMode(\''+m+'\')" style="flex:1;padding:11px;border:none;background:'+(s?'#E8550A':'transparent')+';color:'+(s?'#fff':'#9C8F80')+';font-size:12px;font-weight:800;cursor:pointer;letter-spacing:.5px;transition:background .2s">'+t(m==='tempo'?'modeTime':'modeManual')+'</button>';}).join('')
+    +'</div>';
+  // --- TEMPO MODE ---
+  const durBtns=[{v:30,l:'30 min',d:t('block4')},{v:45,l:'45 min',d:t('block5')}].map(o=>{const s=S.setupDur===o.v;return '<button onclick="setDur('+o.v+')" style="padding:16px;border-radius:12px;border:2px solid '+(s?'#E8550A':'#302820')+';background:'+(s?'rgba(232,85,10,.12)':'#1F1C18')+';color:'+(s?'#E8550A':'#fff')+'"><div style="font-size:20px;font-weight:900">'+o.l+'</div><div style="font-size:9px;color:'+(s?'#E8550A':'#6E6050')+';margin-top:3px">'+o.d+'</div></button>';}).join('');
+  const autoDisplay=S.setupDur!==null?'<div style="margin-top:14px;padding:12px 16px;border-radius:11px;background:#1A1108;border:1px solid #2E1F08;display:flex;align-items:center;justify-content:space-between">'
+    +'<div style="display:flex;gap:20px">'
+    +'<div style="text-align:center"><div style="font-size:20px;font-weight:900;color:#E8550A">'+S.setupBlocks+'</div><div style="font-size:8px;color:#6E6050;margin-top:2px;letter-spacing:1px;text-transform:uppercase">'+t('blocksLabel')+'</div></div>'
+    +'<div style="width:1px;background:#2E1F08"></div>'
+    +'<div style="text-align:center"><div style="font-size:20px;font-weight:900;color:#E8550A">'+S.setupSets+'</div><div style="font-size:8px;color:#6E6050;margin-top:2px;letter-spacing:1px;text-transform:uppercase">'+t('setsLabel')+'</div></div>'
+    +'</div><div style="font-size:9px;color:#5A4A38;font-style:italic;text-align:right;max-width:80px;line-height:1.4">'+t('autoCalc')+'</div></div>':'';
+  const tempoHtml='<div style="margin-bottom:24px"><p style="font-size:9px;font-weight:700;letter-spacing:3px;color:#9C8F80;margin-bottom:9px;text-transform:uppercase">'+t('duration')+'</p><div style="display:grid;grid-template-columns:1fr 1fr;gap:9px">'+durBtns+'</div>'+autoDisplay+'</div>';
+  // --- MANUAL MODE ---
   const blockBtns=[3,4,5,6,7,8].map(n=>{const s=S.setupBlocks===n;return '<button onclick="setBlocks('+n+')" style="flex:1;padding:9px 2px;border-radius:10px;border:2px solid '+(s?'#E8550A':'#302820')+';background:'+(s?'rgba(232,85,10,.12)':'#1F1C18')+';color:'+(s?'#E8550A':'#9C8F80')+';font-size:15px;font-weight:900">'+n+'</button>';}).join('');
   const setBtns=[2,3,4].map(n=>{const s=S.setupSets===n;return '<button onclick="setSets('+n+')" style="flex:1;padding:9px 2px;border-radius:10px;border:2px solid '+(s?'#E8550A':'#302820')+';background:'+(s?'rgba(232,85,10,.12)':'#1F1C18')+';color:'+(s?'#E8550A':'#9C8F80')+';font-size:15px;font-weight:900">'+n+'</button>';}).join('');
-  const ok=S.setupSel.length>0&&S.setupDur!==null&&S.setupBlocks!==null&&S.setupSets!==null;
-  const hasMuscSel=S.setupSel.indexOf(musculacao)>-1;
-  const muscGrpHtml=hasMuscSel
-    ?'<div style="margin-bottom:24px"><p style="font-size:9px;font-weight:700;letter-spacing:3px;color:#FF6B35;margin-bottom:9px;text-transform:uppercase">'+t('muscGrpLabel')+'</p>'
-      +'<div style="display:flex;flex-wrap:wrap;gap:6px">'
-      +MUSC_GRPS.map(g=>{const s=S.setupMuscGrp.indexOf(g.id)>-1;const lbl=(T[LANG].muscGrps&&T[LANG].muscGrps[g.id])||g.id;return'<button onclick="toggleSetupMuscGrp(\''+g.id+'\')" style="font-size:10px;font-weight:700;padding:5px 11px;border-radius:99px;border:1.5px solid '+(s?'#FF6B35':'#3A3028')+';background:'+(s?'#200D00':'transparent')+';color:'+(s?'#FF6B35':'#555')+'">'+lbl+'</button>';}).join('')
-      +'</div><div style="font-size:9px;color:#6E6050;margin-top:7px">'+t('muscGrpHint')+'</div></div>'
-    :'';
-  return '<div style="min-height:100vh;padding:16px 16px 40px"><div style="display:flex;align-items:center;gap:9px;margin-bottom:26px"><button onclick="navTo(home)" style="background:none;color:#9C8F80;font-size:22px;padding:0 4px">←</button><div style="font-size:13px;font-weight:900;letter-spacing:1px">'+t('buildTitle')+'</div><div style="margin-left:auto">'+langToggleBtn()+'</div></div><div style="margin-bottom:24px"><p style="font-size:9px;font-weight:700;letter-spacing:3px;color:#9C8F80;margin-bottom:9px;text-transform:uppercase">'+t('modalities')+'</p><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px">'+modGrid+'</div></div>'+muscGrpHtml+'<div style="margin-bottom:22px"><p style="font-size:9px;font-weight:700;letter-spacing:3px;color:#9C8F80;margin-bottom:9px;text-transform:uppercase">'+t('duration')+'</p><div style="display:grid;grid-template-columns:1fr 1fr;gap:9px">'+durBtns+'</div></div><div style="margin-bottom:22px"><p style="font-size:9px;font-weight:700;letter-spacing:3px;color:#9C8F80;margin-bottom:9px;text-transform:uppercase">'+t('blocksLabel')+'</p><div style="display:flex;gap:7px">'+blockBtns+'</div></div><div style="margin-bottom:26px"><p style="font-size:9px;font-weight:700;letter-spacing:3px;color:#9C8F80;margin-bottom:9px;text-transform:uppercase">'+t('setsLabel')+'</p><div style="display:flex;gap:9px">'+setBtns+'</div></div>'+(selB?'<div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px">'+selB+'</div>':'')+'<button '+(ok?'onclick="doGenerate()"':'')+' style="width:100%;padding:15px;border-radius:12px;border:none;background:'+(ok?'#fff':'#191510')+';color:'+(ok?'#000':'#333')+';font-size:13px;font-weight:900;letter-spacing:1.5px;cursor:'+(ok?'pointer':'not-allowed')+'">'+(ok?t('generate'):t('selectPrompt'))+'</button></div>';
+  const hasEst=S.setupBlocks!==null&&S.setupSets!==null;
+  const estimateHtml=hasEst?'<div style="margin-top:18px;padding:13px 16px;border-radius:12px;background:#1A1108;border:1px solid #2E1F08;display:flex;align-items:center;justify-content:space-between"><div><div style="font-size:9px;font-weight:700;color:#6E6050;letter-spacing:2px;text-transform:uppercase;margin-bottom:2px">'+t('estimatedTime')+'</div><div style="font-size:9px;color:#4A3C2E">'+t('autoCalc')+'</div></div><div style="font-size:26px;font-weight:900;color:#E8550A">~'+estimateMin(S.setupBlocks,S.setupSets)+'<span style="font-size:13px;font-weight:700"> min</span></div></div>':'';
+  const manualHtml='<div style="margin-bottom:22px"><p style="font-size:9px;font-weight:700;letter-spacing:3px;color:#9C8F80;margin-bottom:9px;text-transform:uppercase">'+t('blocksLabel')+'</p><div style="display:flex;gap:7px">'+blockBtns+'</div></div><div style="margin-bottom:22px"><p style="font-size:9px;font-weight:700;letter-spacing:3px;color:#9C8F80;margin-bottom:9px;text-transform:uppercase">'+t('setsLabel')+'</p><div style="display:flex;gap:9px">'+setBtns+'</div></div>'+estimateHtml;
+  const ok=isTempo?(S.setupSel.length>0&&S.setupDur!==null):(S.setupSel.length>0&&S.setupBlocks!==null&&S.setupSets!==null);
+  const prompt=isTempo?t('selectPromptTempo'):t('selectPromptManual');
+  const selB=S.setupSel.map(badge).join(' ');
+  return '<div style="min-height:100vh;padding:16px 16px 40px">'
+    +'<div style="display:flex;align-items:center;gap:9px;margin-bottom:26px"><button onclick="navTo(home)" style="background:none;color:#9C8F80;font-size:22px;padding:0 4px">←</button><div style="font-size:13px;font-weight:900;letter-spacing:1px">'+t('buildTitle')+'</div><div style="margin-left:auto">'+langToggleBtn()+'</div></div>'
+    +modeToggle
+    +'<div style="margin-bottom:24px"><p style="font-size:9px;font-weight:700;letter-spacing:3px;color:#9C8F80;margin-bottom:9px;text-transform:uppercase">'+t('modalities')+'</p><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px">'+modGrid+'</div></div>'
+    +muscGrpHtml
+    +(isTempo?tempoHtml:manualHtml)
+    +(selB?'<div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px">'+selB+'</div>':'')
+    +'<button '+(ok?'onclick="doGenerate()"':'')+' style="margin-top:'+(hasEst&&!isTempo?'18':'0')+'px;width:100%;padding:15px;border-radius:12px;border:none;background:'+(ok?'#fff':'#191510')+';color:'+(ok?'#000':'#333')+';font-size:13px;font-weight:900;letter-spacing:1.5px;cursor:'+(ok?'pointer':'not-allowed')+'">'+(ok?t('generate'):prompt)+'</button>'
+    +'</div>';
 }
 
 function workoutScreen(){
