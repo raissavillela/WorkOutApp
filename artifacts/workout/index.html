@@ -43,8 +43,10 @@ const T={
     selectPrompt:'Selecione modalidades, duração, blocos e séries',
     blocksLabel:'Blocos',
     setsLabel:'Séries',
-    modeTime:'⏱ Tempo',
-    modeManual:'⚙️ Manual',
+    modeTime:'⏱ Modo Tempo',
+    modeTimeDesc:'Escolha quanto tempo você tem e o app define blocos e séries automaticamente',
+    modeManual:'⚙️ Modo Manual',
+    modeManualDesc:'Você escolhe os blocos e séries e o app estima o tempo de treino',
     estimatedTime:'Tempo estimado',
     autoCalc:'Calculado automaticamente',
     selectPromptTempo:'Selecione modalidades e duração',
@@ -149,8 +151,10 @@ const T={
     selectPrompt:'Select modalities, duration, blocks and sets',
     blocksLabel:'Blocks',
     setsLabel:'Sets',
-    modeTime:'⏱ Time',
-    modeManual:'⚙️ Manual',
+    modeTime:'⏱ Time Mode',
+    modeTimeDesc:'Choose how long you have and the app sets blocks and sets automatically',
+    modeManual:'⚙️ Manual Mode',
+    modeManualDesc:'You choose blocks and sets and the app estimates the workout time',
     estimatedTime:'Estimated time',
     autoCalc:'Auto-calculated',
     selectPromptTempo:'Select modalities and duration',
@@ -1200,9 +1204,17 @@ function setupScreen(){
   const modGrid=ML.map(m=>{const s=S.setupSel.indexOf(m.id)>-1;return '<button onclick="toggleSetupMod('+m.id+')" style="padding:11px 6px;border-radius:11px;border:2px solid '+(s?m.c:'#302820')+';background:'+(s?m.b:'#1F1C18')+';color:#fff;text-align:center;transform:'+(s?'scale(0.95)':'scale(1)')+'"><div style="font-size:18px;margin-bottom:3px">'+m.e+'</div><div style="font-size:9px;font-weight:700;color:'+(s?m.c:'#444')+'">'+mLabel(m)+'</div></button>';}).join('');
   const hasMuscSel=S.setupSel.indexOf(musculacao)>-1;
   const muscGrpHtml=hasMuscSel?'<div style="margin-bottom:24px"><p style="font-size:9px;font-weight:700;letter-spacing:3px;color:#FF6B35;margin-bottom:9px;text-transform:uppercase">'+t('muscGrpLabel')+'</p><div style="display:flex;flex-wrap:wrap;gap:6px">'+MUSC_GRPS.map(g=>{const s=S.setupMuscGrp.indexOf(g.id)>-1;const lbl=(T[LANG].muscGrps&&T[LANG].muscGrps[g.id])||g.id;return'<button onclick="toggleSetupMuscGrp(\''+g.id+'\')" style="font-size:10px;font-weight:700;padding:5px 11px;border-radius:99px;border:1.5px solid '+(s?'#FF6B35':'#3A3028')+';background:'+(s?'#200D00':'transparent')+';color:'+(s?'#FF6B35':'#555')+'">'+lbl+'</button>';}).join('')+'</div><div style="font-size:9px;color:#6E6050;margin-top:7px">'+t('muscGrpHint')+'</div></div>':'';
-  const modeToggle='<div style="display:flex;border:1.5px solid #302820;border-radius:11px;overflow:hidden;margin-bottom:26px">'
-    +['tempo','manual'].map(m=>{const s=(S.setupMode||'tempo')===m;return '<button onclick="setSetupMode(\''+m+'\')" style="flex:1;padding:11px;border:none;background:'+(s?'#E8550A':'transparent')+';color:'+(s?'#fff':'#9C8F80')+';font-size:12px;font-weight:800;cursor:pointer;letter-spacing:.5px;transition:background .2s">'+t(m==='tempo'?'modeTime':'modeManual')+'</button>';}).join('')
-    +'</div>';
+  const modeCards=[{id:'tempo',titleKey:'modeTime',descKey:'modeTimeDesc'},{id:'manual',titleKey:'modeManual',descKey:'modeManualDesc'}].map(opt=>{
+    const s=(S.setupMode||'tempo')===opt.id;
+    return '<button onclick="setSetupMode(\''+opt.id+'\')" style="width:100%;padding:14px 16px;border-radius:12px;border:2px solid '+(s?'#E8550A':'#2A2218')+';background:'+(s?'rgba(232,85,10,.08)':'#1A1612')+';text-align:left;cursor:pointer;display:flex;align-items:center;gap:14px">'
+      +'<div style="width:20px;height:20px;border-radius:50%;border:2px solid '+(s?'#E8550A':'#4A3C2E')+';background:'+(s?'#E8550A':'transparent')+';display:flex;align-items:center;justify-content:center;flex-shrink:0">'
+      +(s?'<div style="width:8px;height:8px;border-radius:50%;background:#fff"></div>':'')
+      +'</div>'
+      +'<div><div style="font-size:13px;font-weight:800;color:'+(s?'#fff':'#9C8F80')+';margin-bottom:3px">'+t(opt.titleKey)+'</div>'
+      +'<div style="font-size:10px;color:'+(s?'#C8784A':'#5A4A38')+';line-height:1.5">'+t(opt.descKey)+'</div></div>'
+      +'</button>';
+  }).join('');
+  const modeToggle='<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:26px">'+modeCards+'</div>';
   // --- TEMPO MODE ---
   const durBtns=[{v:30,l:'30 min',d:t('block4')},{v:45,l:'45 min',d:t('block5')}].map(o=>{const s=S.setupDur===o.v;return '<button onclick="setDur('+o.v+')" style="padding:16px;border-radius:12px;border:2px solid '+(s?'#E8550A':'#302820')+';background:'+(s?'rgba(232,85,10,.12)':'#1F1C18')+';color:'+(s?'#E8550A':'#fff')+'"><div style="font-size:20px;font-weight:900">'+o.l+'</div><div style="font-size:9px;color:'+(s?'#E8550A':'#6E6050')+';margin-top:3px">'+o.d+'</div></button>';}).join('');
   const autoDisplay=S.setupDur!==null?'<div style="margin-top:14px;padding:12px 16px;border-radius:11px;background:#1A1108;border:1px solid #2E1F08;display:flex;align-items:center;justify-content:space-between">'
