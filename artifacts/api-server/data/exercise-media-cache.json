@@ -3277,12 +3277,13 @@
     "query": "Deslocamento lateral",
     "exerciseId": "3361",
     "name": "Skater Hops",
-    "gifUrl": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Skater.gif",
+    "gifUrl": "/api/exercise-media/gif/3361",
     "bodyPart": "Cardio",
     "target": "Cardiovascular System",
     "ts": 1776807685106,
-    "source": "auto",
-    "fpSlug": "skater"
+    "source": "override",
+    "fpSlug": "skater",
+    "fallbackUrl": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Skater.gif"
   },
   "elevacao de quadril banco": {
     "query": "Elevação de quadril banco",
@@ -4940,12 +4941,13 @@
     "query": "Polichinelo lateral",
     "exerciseId": "3224",
     "name": "Jack Jump (male)",
-    "gifUrl": "https://fitnessprogramer.com/wp-content/uploads/2021/05/Jumping-jack.gif",
+    "gifUrl": "/api/exercise-media/gif/3224",
     "bodyPart": "Cardio",
     "target": "Cardiovascular System",
     "ts": 1776807685345,
-    "source": "auto",
-    "fpSlug": "jumping-jack"
+    "source": "override",
+    "fpSlug": "jumping-jack",
+    "fallbackUrl": "https://fitnessprogramer.com/wp-content/uploads/2021/05/Jumping-jack.gif"
   },
   "prancha frontal": {
     "query": "Prancha frontal",
@@ -7545,12 +7547,13 @@
     "query": "SDLHP",
     "exerciseId": "0548",
     "name": "Kettlebell Sumo High Pull",
-    "gifUrl": "https://fitnessprogramer.com/wp-content/uploads/2021/04/Barbell-Sumo-Deadlift.gif",
+    "gifUrl": "/api/exercise-media/gif/0548",
     "bodyPart": "Back",
     "target": "Traps",
     "ts": 1776807426853,
-    "source": "auto",
-    "fpSlug": "sumo-deadlift"
+    "source": "override",
+    "fpSlug": "sumo-deadlift",
+    "fallbackUrl": "https://fitnessprogramer.com/wp-content/uploads/2021/04/Barbell-Sumo-Deadlift.gif"
   },
   "sdlhp db unilateral": {
     "query": "SDLHP DB unilateral",
@@ -7568,23 +7571,25 @@
     "query": "SDLHP anilha",
     "exerciseId": "0548",
     "name": "Kettlebell Sumo High Pull",
-    "gifUrl": "https://fitnessprogramer.com/wp-content/uploads/2021/04/Barbell-Sumo-Deadlift.gif",
+    "gifUrl": "/api/exercise-media/gif/0548",
     "bodyPart": "Back",
     "target": "Traps",
     "ts": 1776807685987,
-    "source": "auto",
-    "fpSlug": "sumo-deadlift"
+    "source": "override",
+    "fpSlug": "sumo-deadlift",
+    "fallbackUrl": "https://fitnessprogramer.com/wp-content/uploads/2021/04/Barbell-Sumo-Deadlift.gif"
   },
   "saltito lateral": {
     "query": "Saltito lateral",
     "exerciseId": "3361",
     "name": "Skater Hops",
-    "gifUrl": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Skater.gif",
+    "gifUrl": "/api/exercise-media/gif/3361",
     "bodyPart": "Cardio",
     "target": "Cardiovascular System",
     "ts": 1776807426363,
-    "source": "auto",
-    "fpSlug": "skater"
+    "source": "override",
+    "fpSlug": "skater",
+    "fallbackUrl": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Skater.gif"
   },
   "salto frontal": {
     "query": "Salto frontal",
@@ -9396,23 +9401,25 @@
     "query": "Abdominal bicicleta",
     "exerciseId": "0972",
     "name": "Band Bicycle Crunch",
-    "gifUrl": "https://fitnessprogramer.com/wp-content/uploads/2022/01/Resistance-Band-Bicycle-Crunch.gif",
+    "gifUrl": "/api/exercise-media/gif/0972",
     "bodyPart": "Waist",
     "target": "Abs",
     "ts": 1776819304758,
-    "source": "auto",
-    "fpSlug": "resistance-band-bicycle-crunch"
+    "source": "override",
+    "fpSlug": "resistance-band-bicycle-crunch",
+    "fallbackUrl": "https://fitnessprogramer.com/wp-content/uploads/2022/01/Resistance-Band-Bicycle-Crunch.gif"
   },
   "abdominal bike": {
     "query": "Abdominal bike",
     "exerciseId": "0972",
     "name": "Band Bicycle Crunch",
-    "gifUrl": "https://fitnessprogramer.com/wp-content/uploads/2022/01/Resistance-Band-Bicycle-Crunch.gif",
+    "gifUrl": "/api/exercise-media/gif/0972",
     "bodyPart": "Waist",
     "target": "Abs",
     "ts": 1776819310489,
-    "source": "auto",
-    "fpSlug": "resistance-band-bicycle-crunch"
+    "source": "override",
+    "fpSlug": "resistance-band-bicycle-crunch",
+    "fallbackUrl": "https://fitnessprogramer.com/wp-content/uploads/2022/01/Resistance-Band-Bicycle-Crunch.gif"
   },
   "abdominal canivete": {
     "query": "Abdominal canivete",
@@ -9430,137 +9437,151 @@
     "query": "Abdominal em pé no cross",
     "exerciseId": "0226",
     "name": "Cable Standing Crunch",
-    "gifUrl": "https://fitnessprogramer.com/wp-content/uploads/2021/09/Standing-Cable-Crunch.gif",
+    "gifUrl": "/api/exercise-media/gif/0226",
     "bodyPart": "Waist",
     "target": "Abs",
     "ts": 1776819368703,
-    "source": "auto",
-    "fpSlug": "standing-cable-crunch"
+    "source": "override",
+    "fpSlug": "standing-cable-crunch",
+    "fallbackUrl": "https://fitnessprogramer.com/wp-content/uploads/2021/09/Standing-Cable-Crunch.gif"
   },
   "abdominal supra estendido": {
     "query": "Abdominal supra estendido",
     "exerciseId": "0267",
     "name": "Crunch (hands Overhead)",
-    "gifUrl": "https://fitnessprogramer.com/wp-content/uploads/2015/11/Crunch.gif",
+    "gifUrl": "/api/exercise-media/gif/0267",
     "bodyPart": "Waist",
     "target": "Abs",
     "ts": 1776820219727,
-    "source": "auto",
-    "fpSlug": "crunch"
+    "source": "override",
+    "fpSlug": "crunch",
+    "fallbackUrl": "https://fitnessprogramer.com/wp-content/uploads/2015/11/Crunch.gif"
   },
   "abdominal supra infra unilateral db": {
     "query": "Abdominal supra + infra unilateral DB",
     "exerciseId": "0242",
     "name": "Cable Tuck Reverse Crunch",
-    "gifUrl": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Reverse-Crunch-1.gif",
+    "gifUrl": "/api/exercise-media/gif/0242",
     "bodyPart": "Waist",
     "target": "Abs",
     "ts": 1776820440399,
-    "source": "auto",
-    "fpSlug": "reverse-crunch"
+    "source": "override",
+    "fpSlug": "reverse-crunch",
+    "fallbackUrl": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Reverse-Crunch-1.gif"
   },
   "abdominal infra estendido": {
     "query": "Abdominal infra estendido",
     "exerciseId": "0013",
     "name": "Assisted Lying Leg Raise With Throw Down",
-    "gifUrl": "https://fitnessprogramer.com/wp-content/uploads/2021/05/Crunch-With-Leg-Raise.gif",
+    "gifUrl": "/api/exercise-media/gif/0013",
     "bodyPart": "Waist",
     "target": "Abs",
     "ts": 1776820619454,
-    "source": "auto",
-    "fpSlug": "crunch-with-leg-raise"
+    "source": "override",
+    "fpSlug": "crunch-with-leg-raise",
+    "fallbackUrl": "https://fitnessprogramer.com/wp-content/uploads/2021/05/Crunch-With-Leg-Raise.gif"
   },
   "abdominal obliquo lateral": {
     "query": "Abdominal obliquo lateral",
     "exerciseId": "0407",
     "name": "Dumbbell Side Bend",
-    "gifUrl": "https://fitnessprogramer.com/wp-content/uploads/2021/05/Dumbbell-Side-Bend.gif",
+    "gifUrl": "/api/exercise-media/gif/0407",
     "bodyPart": "Waist",
     "target": "Abs",
     "ts": 1776820676688,
-    "source": "auto",
-    "fpSlug": "dumbbell-side-bend"
+    "source": "override",
+    "fpSlug": "dumbbell-side-bend",
+    "fallbackUrl": "https://fitnessprogramer.com/wp-content/uploads/2021/05/Dumbbell-Side-Bend.gif"
   },
   "abdominal obliquo em pe cross": {
     "query": "Abdominal obliquo em pé cross",
     "exerciseId": "0222",
     "name": null,
-    "gifUrl": "https://fitnessprogramer.com/wp-content/uploads/2021/09/Standing-Cable-Crunch.gif",
+    "gifUrl": "/api/exercise-media/gif/0222",
     "ts": 1776820690033,
-    "source": "auto",
-    "fpSlug": "standing-cable-crunch"
+    "source": "override",
+    "fpSlug": "standing-cable-crunch",
+    "fallbackUrl": "https://fitnessprogramer.com/wp-content/uploads/2021/09/Standing-Cable-Crunch.gif"
   },
   "abdominal rotacao cross baixo cima": {
     "query": "Abdominal rotacao cross (baixo-cima)",
     "exerciseId": "0243",
     "name": null,
-    "gifUrl": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Kneeling-Cable-Crunch.gif",
+    "gifUrl": "/api/exercise-media/gif/0243",
     "ts": 1776820883236,
-    "source": "auto",
-    "fpSlug": "kneeling-cable-crunch"
+    "source": "override",
+    "fpSlug": "kneeling-cable-crunch",
+    "fallbackUrl": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Kneeling-Cable-Crunch.gif"
   },
   "abdominal supra 90": {
     "query": "Abdominal supra 90",
     "exerciseId": "0271",
     "name": null,
-    "gifUrl": "https://fitnessprogramer.com/wp-content/uploads/2022/10/90-Degree-Cable-External-Rotation-.gif",
+    "gifUrl": "/api/exercise-media/gif/0271",
     "ts": 1776821000133,
-    "source": "auto",
-    "fpSlug": "90-degree-cable-external-rotation"
+    "source": "override",
+    "fpSlug": "90-degree-cable-external-rotation",
+    "fallbackUrl": "https://fitnessprogramer.com/wp-content/uploads/2022/10/90-Degree-Cable-External-Rotation-.gif"
   },
   "abdominal twist anilha": {
     "query": "Abdominal twist anilha",
     "exerciseId": "0112",
     "name": null,
-    "gifUrl": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Russian-Twist.gif",
+    "gifUrl": "/api/exercise-media/gif/0112",
     "ts": 1776821063247,
-    "source": "auto",
-    "fpSlug": "russian-twist"
+    "source": "override",
+    "fpSlug": "russian-twist",
+    "fallbackUrl": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Russian-Twist.gif"
   },
   "abdominal twist com anilha": {
     "query": "Abdominal twist com anilha",
     "exerciseId": "0112",
     "name": null,
-    "gifUrl": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Russian-Twist.gif",
+    "gifUrl": "/api/exercise-media/gif/0112",
     "ts": 1776821086770,
-    "source": "auto",
-    "fpSlug": "russian-twist"
+    "source": "override",
+    "fpSlug": "russian-twist",
+    "fallbackUrl": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Russian-Twist.gif"
   },
   "abducao de quadril cross tras": {
     "query": "Abdução de quadril cross tras",
     "exerciseId": "0228",
     "name": null,
-    "gifUrl": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Cable-Hip-Abduction.gif",
+    "gifUrl": "/api/exercise-media/gif/0228",
     "ts": 1776821170131,
-    "source": "auto",
-    "fpSlug": "cable-hip-abduction"
+    "source": "override",
+    "fpSlug": "cable-hip-abduction",
+    "fallbackUrl": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Cable-Hip-Abduction.gif"
   },
   "abducao de quadril em pe cross": {
     "query": "Abdução de quadril em pé cross",
     "exerciseId": "0168",
     "name": null,
-    "gifUrl": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Cable-Hip-Abduction.gif",
+    "gifUrl": "/api/exercise-media/gif/0168",
     "ts": 1776821207072,
-    "source": "auto",
-    "fpSlug": "cable-hip-abduction"
+    "source": "override",
+    "fpSlug": "cable-hip-abduction",
+    "fallbackUrl": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Cable-Hip-Abduction.gif"
   },
   "abducao horizontal de ombros db": {
     "query": "Abdução horizontal de ombros DB",
     "exerciseId": "0235",
     "name": null,
-    "gifUrl": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Cable-Lateral-Raise.gif",
+    "gifUrl": "/api/exercise-media/gif/0235",
     "ts": 1776821287540,
-    "source": "auto",
-    "fpSlug": "cable-lateral-raise"
+    "source": "override",
+    "fpSlug": "cable-lateral-raise",
+    "fallbackUrl": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Cable-Lateral-Raise.gif"
   },
   "afundo db": {
     "query": "Afundo DB",
     "exerciseId": "0336",
     "name": null,
-    "gifUrl": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Lunge.gif",
+    "gifUrl": "/api/exercise-media/gif/0336",
     "ts": 1776821402715,
-    "source": "auto",
-    "fpSlug": "dumbbell-lunge"
+    "source": "override",
+    "fpSlug": "dumbbell-lunge",
+    "fallbackUrl": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Lunge.gif"
   },
   "afundo guiado": {
     "query": "Afundo guiado",
@@ -9576,10 +9597,11 @@
     "query": "Afundo isométrico c/ desenvolvimento unilateral DB",
     "exerciseId": "0054",
     "name": null,
-    "gifUrl": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Shoulder-Press.gif",
+    "gifUrl": "/api/exercise-media/gif/0054",
     "ts": 1776821509031,
-    "source": "auto",
-    "fpSlug": "barbell-shoulder-press"
+    "source": "override",
+    "fpSlug": "barbell-shoulder-press",
+    "fallbackUrl": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Shoulder-Press.gif"
   },
   "hollow rocks": {
     "query": "Hollow rocks",

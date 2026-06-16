@@ -849,7 +849,7 @@ function editWeight(stId,ei){const k=stId+'-'+ei;const v=prompt(t('weightPrompt'
 function openPreMade(idx){
   const w=WDB[idx];
   S.workout=w.s.map((st,i)=>({id:i+1,sets:st.n||3,exercises:(st.e||[]).map((ex,ei)=>({...ex,modality:ex.m,name:ex.n,metric:ex.r,weight:ex.w,id:ex.id||('e'+ei)}))}));
-  S.wMods=w.mods;S.wTitle=t('wTitleReady');S.wSub=S.workout.length+' '+t('blocks');S.isPre=true;S.done={};S.weights={};S.screen='workout';render();
+  S.wMods=w.mods;S.wTitle=t('wTitleReady');S.wSub=S.workout.length+' '+t('blocks');S.isPre=true;S.done={};S.weights={};S.screen='workout';window.scrollTo(0,0);render();
 }
 function doGenerate(){
   const isTempo=S.setupMode==='tempo'||!S.setupMode;
@@ -866,7 +866,7 @@ function doGenerate(){
   S.workout=generateWorkout(S.setupSel,n,S.setupSets);
   GEN.musculacao=origMusc;
   const durStr=isTempo?S.setupDur+'min':'~'+estimateMin(n,S.setupSets)+'min';
-  S.wMods=[...S.setupSel];S.wTitle=t('wTitleBuild');S.wSub=durStr+' / '+n+' '+t('blocks')+' / '+S.setupSets+' sets';S.isPre=false;S.done={};S.weights={};S.screen='workout';render();
+  S.wMods=[...S.setupSel];S.wTitle=t('wTitleBuild');S.wSub=durStr+' / '+n+' '+t('blocks')+' / '+S.setupSets+' sets';S.isPre=false;S.done={};S.weights={};S.screen='workout';window.scrollTo(0,0);render();
 }
 function doRegen(){if(S.isPre)return;S.workout=generateWorkout(S.wMods,S.wNum||4,S.setupSets||3);S.done={};S.weights={};render();}
 
