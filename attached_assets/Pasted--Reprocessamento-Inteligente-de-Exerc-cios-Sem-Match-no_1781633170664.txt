@@ -1,0 +1,252 @@
+## Reprocessamento Inteligente de Exercícios Sem Match no LiftManual
+
+### Contexto
+
+Nossa aplicação de treinos utiliza o LiftManual como fonte de demonstrações, GIFs e informações visuais dos exercícios.
+
+Atualmente, alguns exercícios dos treinos prontos foram cadastrados por professores utilizando nomes variados, abreviações, nomenclaturas em português ou descrições não padronizadas. Por isso, parte deles não encontrou correspondência no LiftManual e recebeu a tag/status **"sem match"**.
+
+Precisamos executar uma nova rodada de matching para aumentar a cobertura de demonstrações visuais.
+
+---
+
+## Objetivo
+
+Encontrar correspondências válidas no LiftManual para exercícios atualmente marcados como **sem match**, utilizando tradução inteligente, sinônimos e busca flexível.
+
+O objetivo final é maximizar a quantidade de exercícios que possuem:
+
+* Demonstração visual
+* GIF
+* Exercício associado no LiftManual
+* URL válida do exercício
+
+---
+
+## Restrições Obrigatórias
+
+### NÃO modificar exercícios que:
+
+* Já possuem match válido
+* Foram associados manualmente
+* Foram customizados por usuários
+* Possuem qualquer vínculo existente com o LiftManual
+
+### Processar APENAS exercícios com status:
+
+* `sem_match`
+* `no_match`
+* ou equivalente ao status atual de "não encontrado"
+
+---
+
+## Estratégia de Busca
+
+Para cada exercício sem match:
+
+### Etapa 1 — Identificar o nome original
+
+Capturar:
+
+* Nome atual
+* Categoria
+* Grupo muscular (quando disponível)
+* Equipamento (quando disponível)
+
+---
+
+### Etapa 2 — Traduzir para inglês
+
+Converter o nome do exercício para terminologia fitness utilizada internacionalmente.
+
+Exemplos:
+
+* Supino reto → Barbell Bench Press
+* Supino inclinado → Incline Bench Press
+* Remada curvada → Bent Over Row
+* Desenvolvimento militar → Military Press
+* Rosca direta → Barbell Curl
+* Tríceps pulley → Tricep Pushdown
+* Agachamento livre → Barbell Squat
+
+Utilizar nomenclatura comum de academias e bancos de exercícios internacionais, não tradução literal.
+
+---
+
+### Etapa 3 — Gerar sinônimos e variações
+
+Para cada exercício, gerar múltiplas formas possíveis.
+
+Exemplo:
+
+Desenvolvimento Militar
+
+Pesquisar também:
+
+* Military Press
+* Overhead Press
+* Shoulder Press
+* Standing Barbell Press
+
+Exemplo:
+
+Remada Curvada
+
+Pesquisar também:
+
+* Bent Over Row
+* Barbell Row
+* Bent-Over Barbell Row
+* Standing Row
+
+---
+
+### Etapa 4 — Busca no LiftManual
+
+Pesquisar no:
+
+[https://liftmanual.com](https://liftmanual.com)
+
+e também nas páginas de exercícios:
+
+[https://liftmanual.com/exercises/](https://liftmanual.com/exercises/)
+
+Utilizar:
+
+* busca exata
+* busca parcial
+* fuzzy matching
+* similaridade semântica
+
+Não depender exclusivamente de correspondência literal.
+
+---
+
+## Regra de Tentativas
+
+Antes de considerar um exercício como "sem match definitivo", realizar pelo menos:
+
+### 5 tentativas diferentes de busca
+
+Incluindo:
+
+1. Nome traduzido principal
+2. Nome técnico em inglês
+3. Nome popular em inglês
+4. Sinônimos comuns
+5. Variações de singular/plural e ordem das palavras
+
+Exemplo:
+
+"Elevação lateral"
+
+Pesquisar:
+
+* Lateral Raise
+* Dumbbell Lateral Raise
+* Side Lateral Raise
+* Lateral Shoulder Raise
+* Dumbbell Side Raise
+
+---
+
+## Critérios de Correspondência
+
+Avaliar:
+
+### Nome
+
+Comparar similaridade entre os termos.
+
+### Grupo muscular
+
+Verificar se o exercício encontrado trabalha os mesmos músculos.
+
+### Equipamento
+
+Verificar compatibilidade:
+
+* Barbell
+* Dumbbell
+* Machine
+* Cable
+* Bodyweight
+* Smith Machine
+* Kettlebell
+
+### Padrão de movimento
+
+Confirmar que o movimento é equivalente.
+
+---
+
+## Critérios de Confiança
+
+### Alta confiança
+
+* Match exato
+* Tradução direta reconhecida
+* Mesmo grupo muscular e equipamento
+
+→ Associar automaticamente
+
+### Média confiança
+
+* Sinônimo amplamente utilizado
+* Similaridade forte
+
+→ Associar automaticamente
+
+### Baixa confiança
+
+* Similaridade parcial
+* Possível correspondência ambígua
+
+→ Não associar automaticamente
+
+---
+
+## Dados a Salvar
+
+Quando houver match válido:
+
+Salvar:
+
+* Nome do exercício LiftManual
+* URL do exercício
+* ID do exercício (se disponível)
+* GIF/Demonstração
+* Nível de confiança
+* Data da associação
+
+Atualizar status para:
+
+`matched`
+
+---
+
+## Relatório Obrigatório
+
+Ao final da execução, gerar relatório contendo:
+
+* Exercício original
+* Tradução utilizada
+* Termos pesquisados
+* Exercício encontrado
+* URL encontrada
+* Nível de confiança
+* Status final
+
+Exemplo:
+
+| Exercício Original      | Tradução            | Match Encontrado    | Confiança | Status    |
+| ----------------------- | ------------------- | ------------------- | --------- | --------- |
+| Supino reto             | Barbell Bench Press | Barbell Bench Press | Alta      | Matched   |
+| Desenvolvimento militar | Overhead Press      | Overhead Press      | Alta      | Matched   |
+| Pullover máquina        | —                   | Nenhum              | —         | Sem Match |
+
+---
+
+## Resultado Esperado
+
+Executar uma nova rodada de matching inteligente apenas para exercícios marcados como **sem match**, utilizando tradução de português para inglês, sinônimos, terminologia fitness internacional e busca flexível no LiftManual, preservando integralmente todos os matches já existentes e todas as associações manuais já realizadas. O foco é aumentar significativamente a cobertura de demonstrações visuais e GIFs sem alterar dados previamente validados.
