@@ -264,7 +264,8 @@ router.get("/exercise-media", async (req, res) => {
       cache[key] = entry;
       persistCache();
     } else if (entry.source !== "override") {
-      entry = { ...entry, source: "override", gifUrl: `/api/exercise-media/gif/${id}` };
+      const fallbackUrl = entry.gifUrl?.startsWith("http") ? entry.gifUrl : undefined;
+      entry = { ...entry, source: "override", gifUrl: `/api/exercise-media/gif/${id}`, ...(fallbackUrl ? { fallbackUrl } : {}) };
       cache[key] = entry;
       persistCache();
     }
@@ -416,7 +417,13 @@ router.get("/exercise-media/gif/:id", async (req, res) => {
     return res.end(fromDisk.buf);
   }
 
-  if (!KEY) return res.status(503).end();
+  if (!KEY) {
+    const fallback = Object.values(cache).find(
+      (e) => e.exerciseId === id && (e as any).fallbackUrl?.startsWith("http"),
+    );
+    if (fallback) return res.redirect(302, (fallback as any).fallbackUrl);
+    return res.status(503).end();
+  }
   try {
     const result = await fetchAndCacheGif(id);
     if (!result) return res.status(404).end();

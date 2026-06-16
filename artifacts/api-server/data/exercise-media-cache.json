@@ -4933,7 +4933,8 @@
     "target": "Cardiovascular System",
     "ts": 1776807426074,
     "source": "override",
-    "fpSlug": "jumping-jack"
+    "fpSlug": "jumping-jack",
+    "fallbackUrl": "https://liftmanual.com/wp-content/uploads/2023/04/cross-jacks.webp"
   },
   "polichinelo lateral": {
     "query": "Polichinelo lateral",
@@ -7555,12 +7556,13 @@
     "query": "SDLHP DB unilateral",
     "exerciseId": "0548",
     "name": "Kettlebell Sumo High Pull",
-    "gifUrl": "https://fitnessprogramer.com/wp-content/uploads/2021/09/Dumbbell-High-Curl.gif",
+    "gifUrl": "/api/exercise-media/gif/0548",
     "bodyPart": "Back",
     "target": "Traps",
     "ts": 1776807685916,
-    "source": "auto",
-    "fpSlug": "dumbbell-high-curl"
+    "source": "override",
+    "fpSlug": "dumbbell-high-curl",
+    "fallbackUrl": "https://liftmanual.com/wp-content/uploads/2023/04/kettlebell-sumo-high-pull.webp"
   },
   "sdlhp anilha": {
     "query": "SDLHP anilha",
@@ -9416,12 +9418,13 @@
     "query": "Abdominal canivete",
     "exerciseId": "0507",
     "name": "Jackknife Sit-up",
-    "gifUrl": "https://fitnessprogramer.com/wp-content/uploads/2022/07/Butterfly-Sit-up.gif",
+    "gifUrl": "/api/exercise-media/gif/0507",
     "bodyPart": "Waist",
     "target": "Abs",
     "ts": 1776819327792,
-    "source": "auto",
-    "fpSlug": "butterfly-sit-up"
+    "source": "override",
+    "fpSlug": "butterfly-sit-up",
+    "fallbackUrl": "https://liftmanual.com/wp-content/uploads/2023/04/jackknife-sit-up.webp"
   },
   "abdominal em pe no cross": {
     "query": "Abdominal em pé no cross",
@@ -9566,7 +9569,8 @@
     "gifUrl": "/api/exercise-media/gif/0381",
     "ts": 1776821459749,
     "source": "override",
-    "fpSlug": "smith-machine-lunge"
+    "fpSlug": "smith-machine-lunge",
+    "fallbackUrl": "https://liftmanual.com/wp-content/uploads/2023/04/lunge.webp"
   },
   "afundo isometrico c desenvolvimento unilateral db": {
     "query": "Afundo isométrico c/ desenvolvimento unilateral DB",
@@ -9583,7 +9587,8 @@
     "name": null,
     "gifUrl": "/api/exercise-media/gif/0242",
     "ts": 1777670330292,
-    "source": "override"
+    "source": "override",
+    "fallbackUrl": "https://liftmanual.com/wp-content/uploads/2023/04/hollow-rock.gif"
   },
   "agachamento": {
     "query": "Agachamento",
@@ -9680,6 +9685,7 @@
     "name": null,
     "gifUrl": "/api/exercise-media/gif/0013",
     "ts": 1777676298412,
-    "source": "override"
+    "source": "override",
+    "fallbackUrl": "https://liftmanual.com/wp-content/uploads/2023/04/dumbbell-lateral-step-up.gif"
   }
 }
