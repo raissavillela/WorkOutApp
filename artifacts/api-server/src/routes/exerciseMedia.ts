@@ -232,18 +232,6 @@ router.get("/exercise-media", async (req, res) => {
   if (!ptName) return res.status(400).json({ error: "name required" });
   const key = normKey(ptName);
 
-  if (customUrls[key]) {
-    return res.json({
-      query: ptName,
-      exerciseId: null,
-      name: null,
-      gifUrl: customUrls[key],
-      ts: Date.now(),
-      source: "custom",
-      customUrl: customUrls[key],
-    });
-  }
-
   if (overrides[key]) {
     const id = overrides[key];
     let entry = cache[key];
@@ -275,8 +263,24 @@ router.get("/exercise-media", async (req, res) => {
       }
       cache[key] = entry;
       persistCache();
+    } else if (entry.source !== "override") {
+      entry = { ...entry, source: "override", gifUrl: `/api/exercise-media/gif/${id}` };
+      cache[key] = entry;
+      persistCache();
     }
     return res.json(entry);
+  }
+
+  if (customUrls[key]) {
+    return res.json({
+      query: ptName,
+      exerciseId: null,
+      name: null,
+      gifUrl: customUrls[key],
+      ts: Date.now(),
+      source: "custom",
+      customUrl: customUrls[key],
+    });
   }
 
   const cached = cache[key];

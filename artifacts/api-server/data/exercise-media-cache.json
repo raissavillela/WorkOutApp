@@ -4928,11 +4928,11 @@
     "query": "Polichinelo frontal",
     "exerciseId": "3224",
     "name": "Jack Jump (male)",
-    "gifUrl": "https://fitnessprogramer.com/wp-content/uploads/2021/05/Jumping-jack.gif",
+    "gifUrl": "/api/exercise-media/gif/3224",
     "bodyPart": "Cardio",
     "target": "Cardiovascular System",
     "ts": 1776807426074,
-    "source": "auto",
+    "source": "override",
     "fpSlug": "jumping-jack"
   },
   "polichinelo lateral": {
@@ -9563,9 +9563,9 @@
     "query": "Afundo guiado",
     "exerciseId": "0381",
     "name": null,
-    "gifUrl": "https://fitnessprogramer.com/wp-content/uploads/2022/07/Smith-Machine-Lunge.gif",
+    "gifUrl": "/api/exercise-media/gif/0381",
     "ts": 1776821459749,
-    "source": "auto",
+    "source": "override",
     "fpSlug": "smith-machine-lunge"
   },
   "afundo isometrico c desenvolvimento unilateral db": {

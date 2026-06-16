@@ -679,7 +679,7 @@ function generateWorkout(mods,num,setsCount){
   return Array.from({length:num},(_,i)=>{const exercises=[];mods.forEach(mod=>{const n=EPM[mod]||2;exercises.push(...(gp[mod]?pickGrp(mod,n):pickSeq(mod,n)));});return{id:i+1,sets:sc,exercises};});
 }
 
-function navTo(s){S.screen=s;if(s===legit)preloadLegit();render();}
+function navTo(s){S.screen=s;window.scrollTo(0,0);if(s===legit)preloadLegit();render();}
 
 /* ============== LEGIT (manual override UI) ============== */
 function _allExerciseRows(){
