@@ -744,6 +744,9 @@ function legitSaveCustom(k){
   const url=inp.value.trim();
   if(url&&!/^https?:\/\//i.test(url)){alert(t('legitCustomInvalid'));return;}
   fetch('/api/exercise-media/custom-url',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:row.name,url:url||null})})
+    .then(()=>{
+      if(url){return fetch('/api/exercise-media/override',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:row.name,exerciseId:null})});}
+    })
     .then(()=>{delete _media[k];fetchMedia(row.name);render();});
 }
 function legitClearCustom(k){

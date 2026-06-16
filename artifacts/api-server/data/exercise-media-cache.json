@@ -7579,18 +7579,6 @@
     "fpSlug": "sumo-deadlift",
     "fallbackUrl": "https://fitnessprogramer.com/wp-content/uploads/2021/04/Barbell-Sumo-Deadlift.gif"
   },
-  "saltito lateral": {
-    "query": "Saltito lateral",
-    "exerciseId": "3361",
-    "name": "Skater Hops",
-    "gifUrl": "/api/exercise-media/gif/3361",
-    "bodyPart": "Cardio",
-    "target": "Cardiovascular System",
-    "ts": 1776807426363,
-    "source": "override",
-    "fpSlug": "skater",
-    "fallbackUrl": "https://fitnessprogramer.com/wp-content/uploads/2021/02/Skater.gif"
-  },
   "salto frontal": {
     "query": "Salto frontal",
     "exerciseId": "1472",
