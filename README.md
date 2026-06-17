@@ -2,20 +2,6 @@
 
 A web application for workout tracking, built with pure HTML, CSS, and vanilla JavaScript on the front-end, plus a small Express/TypeScript proxy that fetches exercise demonstration GIFs.
 
----
-
-> **A note on the development process**
->
-> This project was built using AI-powered tools — specifically **Claude (Anthropic)** and **Replit Agent** — as part of a modern approach to software development.
->
-> The idea, feature structure, workout data, and all product decisions are entirely my own. The AI tools were used to accelerate technical implementation, debug issues, and iterate quickly on design and app behavior.
->
-> To me, this way of working demonstrates two things: the ability to **think like a developer** — knowing what to build, how to structure it, what to fix, and how to evolve a product — and the skill to **use LLMs effectively**, leveraging their capabilities without losing control of the final result.
->
-> Knowing how to use these tools intelligently is, increasingly, a technical skill in its own right.
-
----
-
 ## Features
 
 ### Profile
@@ -144,3 +130,17 @@ The web app is served on its own port and talks to the API server through `/api/
 | `POST` | `/api/exercise-media/custom-url` | Set or clear a custom external image URL for a given name |
 | `GET`  | `/api/exercise-media/gif/:id` | Stream a GIF file (adds the WorkoutX auth header) |
 | `GET`  | `/api/exercise-media/_status` | Quick health check (key configured, cache size, override count) |
+
+---
+
+> **A note on the development process**
+>
+> This project was built using AI-powered tools — specifically **Claude (Anthropic)** and **Replit Agent** — as part of a modern approach to software development.
+>
+> The idea, feature structure, workout data, and all product decisions are entirely my own. The AI tools were used to accelerate technical implementation, debug issues, and iterate quickly on design and app behavior.
+>
+> To me, this way of working demonstrates two things: the ability to **think like a developer** — knowing what to build, how to structure it, what to fix, and how to evolve a product — and the skill to **use LLMs effectively**, leveraging their capabilities without losing control of the final result.
+>
+> Knowing how to use these tools intelligently is, increasingly, a technical skill in its own right.
+
+---
