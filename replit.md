@@ -1,70 +1,152 @@
-# Workspace
+# Workout App — Projeto
 
-## Overview
+## Visão Geral
 
-pnpm workspace monorepo using TypeScript. Each package manages its own dependencies.
+Monorepo pnpm com dois artefatos principais:
+
+- **`artifacts/workout/`** — app web single-page (vanilla HTML/CSS/JS, `index.html`)
+- **`artifacts/api-server/`** — proxy Express/TypeScript para GIFs de exercícios
+
+---
 
 ## Stack
 
-- **Monorepo tool**: pnpm workspaces
-- **Node.js version**: 24
-- **Package manager**: pnpm
-- **TypeScript version**: 5.9
-- **API framework**: Express 5
-- **Database**: PostgreSQL + Drizzle ORM
-- **Validation**: Zod (`zod/v4`), `drizzle-zod`
-- **API codegen**: Orval (from OpenAPI spec)
-- **Build**: esbuild (CJS bundle)
+| Camada | Tecnologia |
+|---|---|
+| Monorepo | pnpm workspaces |
+| Node.js | 24 |
+| Package manager | pnpm |
+| TypeScript | 5.9 |
+| API framework | Express 5 |
+| Build | esbuild |
 
-## Key Commands
+## Comandos principais
 
-- `pnpm run typecheck` — full typecheck across all packages
-- `pnpm run build` — typecheck + build all packages
-- `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from OpenAPI spec
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- `pnpm --filter @workspace/api-server run dev` — run API server locally
+```bash
+pnpm --filter @workspace/api-server run dev   # inicia o servidor de API (porta 8080)
+pnpm --filter @workspace/workout run dev      # inicia o app web
+```
 
-See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details.
+---
 
-## Workout App
+## App de Treino (`artifacts/workout/index.html`)
 
-The Workout App (`artifacts/workout/index.html`) is a single-file vanilla JS app with a state-machine UI (`S.screen`). All data is stored in `localStorage` — no account server required.
+SPA vanilla JS com máquina de estado simples (`S.screen`). Todo o estado do usuário fica em `localStorage` — sem conta/servidor necessário.
 
-### Profile / Login
+### Telas (`S.screen`)
 
-The app uses a local profile system (no password, no server). On first launch the home screen shows a **"Criar perfil"** card. Tapping it opens a setup form where the user enters their name and optionally uploads a profile photo (stored as base64 in `localStorage` under the key `wk_profile`).
+| Valor | Tela |
+|---|---|
+| `home` | Home com perfil, mini-calendário e check-in |
+| `lib` | Lista de treinos prontos (WDB) |
+| `setup` | Montagem de treino personalizado |
+| `workout` | Execução de treino (blocos + séries) |
+| `cal` | Calendário completo de check-ins |
+| `legit` | Tela de curadoria de GIFs (Legitimar) |
+| `profile` | Edição de perfil |
 
-Once a profile exists the home screen transforms into the profile view:
-- **Circular photo** with an orange border at the top
-- **Name** below the photo
-- **Three stats**: Check-ins · Days active · Duration (estimated at 45 min per check-in)
-- **Monthly calendar** showing workout days — days with check-ins display the profile photo as a small circle
+### Perfil e Check-in
 
-The **"Editar"** button (top-right) opens the edit screen to update name or photo. **"Sair do perfil"** removes the profile from localStorage.
+- Perfil local: nome + foto base64 em `localStorage` (`wk_profile`)
+- Check-in: salva data em `wk_ci`; o dia aparece no mini-calendário da home
+- Calendar view: cada dia pode receber título e calorias; dias com entry são destacados
 
-### Check-in
+### Navegação
 
-The **Check-in** card (replaces the old Calendário card in the nav) lets users log a workout for the current day with one tap:
-- Tap the card → saves today's date to `localStorage` under `wk_ci`
-- The card turns green with a ✅ if already checked in today
-- The checked-in day immediately appears as a photo circle on the home calendar and on the profile calendar screen
+- Toda mudança de tela chama `navTo(s)` ou inclui `window.scrollTo(0,0)` explicitamente
+- Ao voltar de um treino pronto (`S.isPre === true`), o ← retorna para `lib`; de treino montado, retorna para `home`
 
-### Calendar
+### Dados de exercícios
 
-The **calendar view** (`S.screen === 'cal'`) shows all months with logged check-ins. Each day cell can be tapped to open a modal where the user can add a title and calorie count to that session. Days with entries are highlighted; tapping an existing entry lets the user edit or delete it.
+- **`WDB`** — array de 33 treinos prontos (definido inline em `index.html`, linha ~594)
+- **`GEN`** — objeto com exercícios por modalidade: `musculacao`, `core`, `cardio`, `metabolico`, `funcional`, `crossfit`, `equilibrio` (linha ~472)
+- Total: ~254 exercícios únicos não-cardio
 
-The profile home screen shows a **mini calendar** of the current month. Days with check-ins render the user's profile photo (if set) as a 30 × 30 px circle — matching the reference design.
+---
 
-### Exercise Demonstrations (GIF system)
+## Servidor de API (`artifacts/api-server/`)
 
-- Demonstration GIFs come from the WorkoutX API (`api.workoutxapp.com`) via the proxy in `artifacts/api-server/src/routes/exerciseMedia.ts`.
-- Endpoints: `GET /api/exercise-media?name=`, `GET /api/exercise-media/candidates?q=`, `POST /api/exercise-media/override`, `GET /api/exercise-media/_status`.
-- Free plan = 30 req/min; the proxy throttles to 1 call / 2.1 s and caches both per-keyword search results and per-exercise resolutions to disk under `artifacts/api-server/data/`.
-- `WORKOUTX_API_KEY` is required on the server.
-- PT→EN translations live in `data/exercise-translations.json`. Add new entries here to improve auto-match quality.
-- The app shows an inline "Ver execução" toggle per exercise in the workout screen. **Cardio exercises never show the toggle.**
-- `S.screen === 'legit'` is a manual legitimisation screen (Home → "Legitimar GIFs"): lists every non-cardio exercise with its current matched GIF, badge (Auto / Manual / Sem match), filter chips, inline candidate picker, and search-by-keyword. Clicking a candidate POSTs an override and refreshes the cache for that exercise.
+### Endpoints
+
+| Método | Rota | Descrição |
+|---|---|---|
+| GET | `/api/exercise-media?name=` | Busca GIF/imagem para um exercício |
+| GET | `/api/exercise-media/gif/:id` | Proxy de GIF do WorkoutX (com fallback) |
+| GET | `/api/exercise-media/candidates?q=` | Lista candidatos para curadoria |
+| POST | `/api/exercise-media/override` | Define/limpa curadoria manual (override) |
+| POST | `/api/exercise-media/custom-url` | Define/limpa URL personalizada |
+| GET | `/api/exercise-media/_status` | Status do cache |
+
+### Prioridade de resolução de GIF
+
+```
+1. Override manual (overrides.json)      → source: "override"
+2. URL personalizada (custom-urls.json)  → source: "custom"
+3. Cache auto (WorkoutX API)             → source: "auto"
+4. Sem match                             → source: "miss"
+```
+
+> **Nota:** Ao salvar uma URL personalizada via UI ("Salvar URL" no Legitimar), o override existente é automaticamente removido para que a URL entre em vigor.
+
+### Arquivos de dados (`artifacts/api-server/data/`)
+
+| Arquivo | Descrição |
+|---|---|
+| `exercise-media-custom-urls.json` | 254 URLs do liftmanual.com (chaves normalizadas) |
+| `exercise-media-overrides.json` | Curadoria manual via Legitimar (ID do exercício) |
+| `exercise-media-cache.json` | Cache de resoluções automáticas (~183 entradas) |
+| `exercise-translations.json` | 244 traduções PT→EN para melhorar o auto-match |
+| `liftmanual-slugs.txt` | 2465 slugs disponíveis no liftmanual.com |
+
+### Normalização de chaves (`normKey`)
+
+Todos os arquivos de dados usam chaves normalizadas com a mesma função:
+
+```typescript
+s.toLowerCase()
+ .normalize("NFD")
+ .replace(/[\u0300-\u036f]/g, "")   // remove acentos
+ .replace(/[^a-z0-9 ]/g, " ")       // /°() → espaço
+ .replace(/\s+/g, " ")
+ .trim()
+```
+
+**Importante:** qualquer chave adicionada manualmente aos arquivos `.json` deve seguir este formato.
+
+### Fallback de GIFs (sem API key)
+
+O proxy `/api/exercise-media/gif/:id` funciona assim quando `WORKOUTX_API_KEY` não está configurada:
+1. Verifica disco (`gif-cache/`)
+2. Verifica `fallbackUrl` no cache (URL liftmanual.com preservada para os 6 overrides iniciais)
+3. Retorna 503
+
+### Scripts utilitários (`scripts/src/`)
+
+- **`fetch-liftmanual-gifs.mjs`** — scrape liftmanual.com para popular `exercise-media-custom-urls.json`. Usa `GET + Range: bytes=0-0` para verificar existência de imagem (Cloudflare bloqueia HEAD). Rate limit: ~29 req antes do 429 — aguardar alguns minutos entre execuções em lote.
+
+---
+
+## Tela de Curadoria (Legitimar)
+
+Acessível via Home → "Legitimar GIFs". Lista todos os ~254 exercícios não-cardio com:
+
+- **Badges de status:** Auto / Manual / URL / Sem match
+- **Filtros:** All / Sem match / Auto / Manual / URL
+- **Por exercício:** GIF atual, URL personalizada, busca por candidatos, pick manual
+- **Salvar URL:** ao salvar uma URL, o override existente é automaticamente removido
+
+---
+
+## Variáveis de Ambiente
+
+| Variável | Uso |
+|---|---|
+| `WORKOUTX_API_KEY` | Chave para WorkoutX API (busca automática de GIFs). Opcional — sem ela, apenas liftmanual.com e overrides com fallback funcionam. |
+| `PORT` | Porta do servidor (padrão 8080) |
+
+---
 
 ## User Preferences
 
 - App language: Portuguese (PT) by default, toggleable to EN via top-right toggle.
+- Orange accent: `#E8550A`. Background: `#171410`.
